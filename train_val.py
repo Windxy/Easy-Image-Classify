@@ -61,26 +61,31 @@ if __name__ == '__main__':
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    test_transforms = transforms.Compose([
+    val_transforms = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    train_dataset = datasets.CIFAR10(root='cifar10',
-                                     train=True,
-                                     transform=train_transforms,
-                                     download=True)
+    ######################A.使用CIFAR10#############################
+    # train_dataset = datasets.CIFAR10(root='cifar10',
+    #                                  train=True,
+    #                                  transform=train_transforms,
+    #                                  download=True)
+    # validate_dataset = datasets.CIFAR10(root='cifar10',
+    #                                 train=False,
+    #                                 transform=val_transforms,
+    #                                 download=True)
+
+    ######################B.使用自定义数据集#########################
+    train_dataset = datasets.ImageFolder(root="CustomDataSet\\train", transform=train_transforms)
+    validate_dataset = datasets.ImageFolder(root="CustomDataSet\\val", transform=val_transforms)
+
     train_data_loader = data.DataLoader(train_dataset,
                                         batch_size=opt.batch_size,
                                         shuffle=True,
                                         drop_last=True,
                                         num_workers=opt.num_workers)
-
-    test_dataset = datasets.CIFAR10(root='cifar10',
-                                    train=False,
-                                    transform=test_transforms,
-                                    download=True)
-    test_data_loader = data.DataLoader(test_dataset,
+    test_data_loader = data.DataLoader(validate_dataset,
                                        batch_size=opt.batch_size,
                                        shuffle=False,
                                        num_workers=opt.num_workers)
@@ -180,7 +185,7 @@ if __name__ == '__main__':
                     total += label.size(0)
                     correct += (predicted == label).sum().item()
 
-            print(f'Accuracy on test set: {100 * correct / total:.2f}')
+            print(f'Accuracy on val set: {100 * correct / total:.2f}')
 
             # 保存历史
             cpkt = {
