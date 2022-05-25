@@ -50,22 +50,24 @@ if __name__ == '__main__':
                         help='Batch size大小 默认32')
     parser.add_argument('--num_workers', type=int, default=2,
                         help='数据集加载进程数 默认8')
-    parser.add_argument('--Dataset', type=int, default='mnist', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
+    parser.add_argument('--Dataset', type=str, default='mnist', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
                         help='选择使用训练和验证的数据集')
+    parser.add_argument('--input_size', type=int, default=28,
+                        help='输入图像的尺寸，例如,28*28')
 
     opt = parser.parse_args()
 
     '''step1.设置数据集和对应的transform'''
     train_transforms = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
+        transforms.RandomCrop(opt.input_size, padding=4),
+        # transforms.RandomHorizontalFlip(),    # mnist不适用
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # mnist不适用
     ])
 
     val_transforms = transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # mnist不适用
     ])
 
     if opt.Dataset == 'cifar10':

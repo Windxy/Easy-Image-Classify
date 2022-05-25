@@ -6,7 +6,7 @@ class ExampleModel(nn.Module):
         super(ExampleModel,self).__init__()
         self.conv = nn.Sequential(
             # C × H × W
-            nn.Conv2d(in_channels=3,out_channels=96,kernel_size=5,stride=1,padding=2), # 11 * 11 Conv(96),stride 1
+            nn.Conv2d(in_channels=1,out_channels=96,kernel_size=5,stride=1,padding=2), # 11 * 11 Conv(96),stride 1
             nn.BatchNorm2d(96),
             nn.ReLU(),
             nn.MaxPool2d(3,2),  # kernel_size=3,stride=2
@@ -31,7 +31,7 @@ class ExampleModel(nn.Module):
         )
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(256*3*3,10), # full connection layer
+            nn.Linear(256*2*2,10), # full connection layer
         )
     def forward(self,img):
         feature = self.conv(img)
@@ -42,6 +42,6 @@ if __name__ == '__main__':
     from torchstat import stat
 
     net = ExampleModel()
-    stat(net,(3, 32,32))
-    X = torch.rand(1, 3, 32, 32)
+    stat(net,(1, 28,28))
+    X = torch.rand(1, 1, 28, 28)
     print(net(X).shape)
