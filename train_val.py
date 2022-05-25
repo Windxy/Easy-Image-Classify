@@ -49,7 +49,9 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=4,
                         help='Batch size大小 默认32')
     parser.add_argument('--num_workers', type=int, default=2,
-                        help='数据集加载进程数 默认8)')
+                        help='数据集加载进程数 默认8')
+    parser.add_argument('--Dataset', type=int, default='mnist', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
+                        help='选择使用训练和验证的数据集')
 
     opt = parser.parse_args()
 
@@ -66,19 +68,21 @@ if __name__ == '__main__':
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-    ######################A.使用CIFAR10#############################
-    # train_dataset = datasets.CIFAR10(root='cifar10',
-    #                                  train=True,
-    #                                  transform=train_transforms,
-    #                                  download=True)
-    # validate_dataset = datasets.CIFAR10(root='cifar10',
-    #                                 train=False,
-    #                                 transform=val_transforms,
-    #                                 download=True)
+    if opt.Dataset == 'cifar10':
+        train_dataset = datasets.CIFAR10(root='cifar10', train=True, transform=train_transforms, download=True)
+        validate_dataset = datasets.CIFAR10(root='cifar10', train=False, transform=val_transforms, download=True)
 
-    ######################B.使用自定义数据集#########################
-    train_dataset = datasets.ImageFolder(root="CustomDataSet\\train", transform=train_transforms)
-    validate_dataset = datasets.ImageFolder(root="CustomDataSet\\val", transform=val_transforms)
+    elif opt.Dataset == 'cifar100':
+        train_dataset = datasets.CIFAR10(root='cifar100', train=True, transform=train_transforms, download=True)
+        validate_dataset = datasets.CIFAR10(root='cifar100', train=False, transform=val_transforms, download=True)
+
+    elif opt.Dataset == 'mnist':
+        train_dataset = datasets.MNIST(root='mnist', train=True, transform=train_transforms, download=True)
+        validate_dataset = datasets.MNIST(root='mnist', train=False, transform=train_transforms, download=True)
+
+    elif opt.Dataset == 'custom':
+        train_dataset = datasets.ImageFolder(root="CustomDataSet\\train", transform=train_transforms)
+        validate_dataset = datasets.ImageFolder(root="CustomDataSet\\val", transform=val_transforms)
 
     train_data_loader = data.DataLoader(train_dataset,
                                         batch_size=opt.batch_size,
