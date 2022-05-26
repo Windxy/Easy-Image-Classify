@@ -44,12 +44,12 @@ if __name__ == '__main__':
                         help='使用前一次保存的权重 默认None，可选True or False')
     parser.add_argument('--path_to_checkpoint', type=str, default='',
                         help='前一次保存权重的地址 默认:""')
-    parser.add_argument('--epochs', type=int, default=5,
+    parser.add_argument('--epochs', type=int, default=10,
                         help='epoch数 默认50')
-    parser.add_argument('--batch_size', type=int, default=4,
+    parser.add_argument('--batch_size', type=int, default=8,
                         help='Batch size大小 默认32')
-    parser.add_argument('--num_workers', type=int, default=2,
-                        help='数据集加载进程数 默认8')
+    parser.add_argument('--num_workers', type=int, default=0,
+                        help='数据集加载进程数 默认0')
     parser.add_argument('--Dataset', type=str, default='mnist', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
                         help='选择使用训练和验证的数据集')
     parser.add_argument('--input_size', type=int, default=28,
@@ -66,6 +66,7 @@ if __name__ == '__main__':
     ])
 
     val_transforms = transforms.Compose([
+        transforms.RandomCrop(opt.input_size, padding=4),
         transforms.ToTensor(),
         # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # mnist不适用
     ])
@@ -92,7 +93,7 @@ if __name__ == '__main__':
                                         drop_last=True,
                                         num_workers=opt.num_workers)
     test_data_loader = data.DataLoader(validate_dataset,
-                                       batch_size=opt.batch_size,
+                                       batch_size=1,
                                        shuffle=False,
                                        num_workers=opt.num_workers)
 
