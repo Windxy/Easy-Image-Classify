@@ -54,6 +54,8 @@ if __name__ == '__main__':
                         help='选择使用训练和验证的数据集')
     parser.add_argument('--input_size', type=int, default=28,
                         help='输入图像的尺寸，例如,28*28')
+    parser.add_argument('--num_classes', type=int, default=10,
+                        help='类别数，多少个类别就是多少')
 
     opt = parser.parse_args()
 
@@ -98,7 +100,7 @@ if __name__ == '__main__':
                                        num_workers=opt.num_workers)
 
     '''step2.加载网络'''
-    net = example_model.ExampleModel()
+    net = example_model.ExampleModel(class_num=opt.num_classes)
 
     '''step3.加载损失函数'''
     criterion_CE = nn.CrossEntropyLoss()

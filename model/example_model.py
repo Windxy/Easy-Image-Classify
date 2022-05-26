@@ -2,7 +2,7 @@ import torch
 from torch import nn
 
 class ExampleModel(nn.Module):
-    def __init__(self):
+    def __init__(self,class_num=10):
         super(ExampleModel,self).__init__()
         self.conv = nn.Sequential(
             # C × H × W
@@ -31,7 +31,7 @@ class ExampleModel(nn.Module):
         )
         self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(256*2*2,10), # full connection layer
+            nn.Linear(256*2*2,class_num), # full connection layer
         )
     def forward(self,img):
         feature = self.conv(img)
