@@ -50,11 +50,11 @@ if __name__ == '__main__':
                         help='Batch size大小 默认32')
     parser.add_argument('--num_workers', type=int, default=0,
                         help='数据集加载进程数 默认0')
-    parser.add_argument('--Dataset', type=str, default='mnist', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
+    parser.add_argument('--Dataset', type=str, default='custom', choices=['custom', 'cifar10', 'cifar100', 'mnist'],
                         help='选择使用训练和验证的数据集')
     parser.add_argument('--input_size', type=int, default=28,
                         help='输入图像的尺寸，例如,28*28')
-    parser.add_argument('--num_classes', type=int, default=10,
+    parser.add_argument('--num_classes', type=int, default=3,
                         help='类别数，多少个类别就是多少')
 
     opt = parser.parse_args()
@@ -94,7 +94,7 @@ if __name__ == '__main__':
                                         shuffle=True,
                                         drop_last=True,
                                         num_workers=opt.num_workers)
-    test_data_loader = data.DataLoader(validate_dataset,
+    val_data_loader = data.DataLoader(validate_dataset,
                                        batch_size=1,
                                        shuffle=False,
                                        num_workers=opt.num_workers)
@@ -179,8 +179,8 @@ if __name__ == '__main__':
             correct = 0
             total = 0
 
-            pbar = tqdm(enumerate(test_data_loader),
-                        total=len(test_data_loader))
+            pbar = tqdm(enumerate(val_data_loader),
+                        total=len(val_data_loader))
             with torch.no_grad():
                 for i, data in pbar:
                     # data preparation
