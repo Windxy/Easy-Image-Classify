@@ -61,8 +61,13 @@ CustomDataset
 
 运行train_val.py   run train_val.py 
 
-训练和验证的步骤如下 The steps for training and validation are as follows
 
+```bash
+python train_val.py
+```
+
+训练和验证的步骤如下 The steps for training and validation are as follows
+```
 - step0.参数配置 parameter configuration
 - step1.设置数据集和对应的transform Set the dataset and data Transform  
 - step2.加载模型 build model
@@ -75,13 +80,17 @@ CustomDataset
   - step6.3损失计算 calculate loss
   - step6.4后向梯度计算 gradient
   - step6.5参数更新 parameter update
-
+```
 
 
 
 ### 6.测试和评估
 
-待完成（to be completed）
+运行test.py   run test.py 
+
+```bash
+python test.py
+```
 
 
 
